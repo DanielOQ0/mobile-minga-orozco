@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Link: {process.env.API_URL} and {process.env.NODE_ENV}</Text>
+      <Text>Hello work!</Text>
       <StatusBar style="auto" />
     </View>
   );
