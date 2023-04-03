@@ -15,6 +15,7 @@ import editDeleteChapter from "./EditDeleteChapter/reducer";
 import userReducer from './CaptureUser/reducer';
 import companyReducer from "./Company/reducer";
 import verifyReducer from './User/reducer'
+import reloadNavigationStateReducer from './NavigationState/reducer'
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +35,6 @@ export const store = configureStore({
     editDeleteChapter: editDeleteChapter,
     user: verifyReducer,
     Company: companyReducer,
-
+    stateNavigate: reloadNavigationStateReducer,
   },
 });

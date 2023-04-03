@@ -1,20 +1,33 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { Text , StyleSheet, View, ImageBackground , Dimensions, Image, Button, TouchableOpacity} from 'react-native'
+import { Text , StyleSheet, View, ImageBackground , Dimensions, Image, Button, TouchableOpacity, Alert} from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 function Hero() {
     const navigation = useNavigation();
-    
+
+    async function handleMangas() {
+        try {
+            const value = await AsyncStorage.getItem('token');
+            if(value){
+                navigation.navigate('Mangas');
+            }else{
+                Alert.alert("To see the manga you must log in or register")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
   return (
     <View style={style.hero}>
         <ImageBackground source={require('../../assets/backgroundHero.jpg')} style={style.backgroundHeroImage}>
         <Text style={style.titleHero}>Best manga reader</Text>
         <Text style={style.subtitleHero}>Your favourite manga reader 😏</Text>
         <TouchableOpacity style={style.buttonHero}
-            onPress={() => {navigation.navigate('Mangas');}}
+            onPress={() => {handleMangas()}}
         >
             <Text style={style.buttonTextHero}>See Mangas</Text>
         </TouchableOpacity>
