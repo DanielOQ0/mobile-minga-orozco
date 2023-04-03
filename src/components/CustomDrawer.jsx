@@ -14,6 +14,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CustomDrawer = props => {
+  
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView

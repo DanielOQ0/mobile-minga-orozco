@@ -1,69 +1,65 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState }  from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {View , ImageBackground , Dimensions , StyleSheet, Text , Image  , TextInput, TouchableOpacity, Alert} from 'react-native'
+import {View , ImageBackground , Dimensions , StyleSheet, Text , Image  , TextInput, TouchableOpacity} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-function SingInForm() {
+function SingUpForm() {
     const navigation = useNavigation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState()
     const dispatch = useDispatch()
 
-    async function handleSubmit(){
+    async function handleSubmit() {
       let data = {
+        name: name,
         email: email,
+        photo: photo,
         password: password
-      };
-      
-      let url = process.env.API_URL.concat("/auth/signin");
-  
-      try {
-        setLoading(true)
-        const response = await axios.post(url, data);
-        const { token, user } = response.data;
-        
-        // Almacenar el token en AsyncStorage y luego imprimir el valor almacenado
-        await AsyncStorage.setItem('token', token);
-        const storedToken = await AsyncStorage.getItem('token');
-        console.log('Token almacenado:', storedToken);
-        
-        // Almacenar los datos del usuario en AsyncStorage y luego imprimir el valor almacenado
-        await AsyncStorage.setItem('user', JSON.stringify({
-          name: user.name,
-          email: user.email,
-          photo: user.photo,
-        }));
-
-        const storedUser = await AsyncStorage.getItem('user');
-        console.log('Usuario almacenado:', storedUser);
-        Alert.alert("Singed in successfully")
-        dispatch(reloadBottomTabs({ state: !state }))
+    }
+    
+    let url = 'https://minga-host.onrender.com/auth/signup'
+    try {
+      setLoading(true)
+        await axios.post(url, data)
+        console.log('creado')
         setTimeout(() => {
-          setLoading(false);
-        }, 2000);
-      } catch (error) {
-        let errorMessage
-        let type = typeof error.response.data.message
-        if(type === "object"){
-            errorMessage = error.response.data.message[0]
-        }else{errorMessage = error.response.data.message}
-        Alert.alert(errorMessage)
-        setLoading(false)
-      }
+        setLoading(false);
+      }, 3000);
+      navigation.navigate("Home")
+      Alert.alert(
+        'Account created!',
+        'Your account has been created successfully.',
+      );
+    } catch (error) {
+        console.log(error)
+        setLoading(false);
+    }
     }
 
   return (
-    <View style={style.containerSingIn}>
-        <ImageBackground source={require('../../assets/backgroundHero.jpg')} style={style.backgroundSingIn}>
-            <Text style={style.titleSingIn}>Welcome!</Text>
-            <Text style={style.subtitleSingIn}>Discover manga, manhua and manhwa, track your progress, have fun, read manga.</Text>
+    <View style={style.containerSingUp}>
+        <ImageBackground source={require('../../assets/backgroundHero.jpg')} style={style.backgroundSingUp}>
+
+            <Text style={style.titleSingUp}>Welcome!</Text>
+            <Text style={style.subtitleSingUp}>Discover manga, manhua and manhwa, track your progress, have fun, read manga.</Text>
+            <View style={style.fieldset}>
+                <Text style={style.legend}>Name</Text>
+                <View style={style.legendCont}>
+                <TextInput
+                    style={style.input}
+                    id="name"
+                    name="name"
+                    required
+                    onChangeText={(inputText) => setName(inputText)}
+                />
+                </View>
+            </View>
             <View style={style.fieldset}>
                 <Text style={style.legend}>Email</Text>
                 <View style={style.legendCont}>
@@ -73,6 +69,18 @@ function SingInForm() {
                     name="email"
                     required
                     onChangeText={(inputText) => setEmail(inputText)}
+                />
+                </View>
+            </View>
+            <View style={style.fieldset}>
+                <Text style={style.legend}>Photo</Text>
+                <View style={style.legendCont}>
+                <TextInput
+                    style={style.input}
+                    id="photo"
+                    name="photo"
+                    required
+                    onChangeText={(inputText) => setPhoto(inputText)}
                 />
                 </View>
             </View>
@@ -89,20 +97,20 @@ function SingInForm() {
                 />
                 </View>
             </View>
-            <TouchableOpacity style={style.button} onPress={handleSubmit}>
-                <Text style={style.buttonText}>Sign in</Text>
+            <TouchableOpacity style={style.buttonSingUp} onPress={handleSubmit}>
+                <Text style={style.buttonTextSingUp}>Sign Up</Text>
                 <Spinner visible={loading} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
             </TouchableOpacity>
             <View style={style.parrafosForm}>
-                <Text style={style.subtitleSingIn}>
-                You don't have an account yet?
+                <Text style={style.subtitleSingUp}>
+                Already have an account? 
                 <Text
                     style={style.parrafosFormText}
                     onPress={() => {
-                    navigation.navigate('Register');
+                    navigation.navigate('Index');
                     }}>
                     {' '}
-                    Sign up
+                    Sign In
                 </Text>
                 </Text>
             </View>
@@ -111,11 +119,12 @@ function SingInForm() {
   )
 }
 const style = StyleSheet.create({
-    containerSingIn:{
+    containerSingUp:{
         width: screenWidth,
         height: screenHeight,
+        backgroundColor: "black"
     },
-    backgroundSingIn: {
+    backgroundSingUp: {
         width: '100%',
         height: '100%',
         flex: 1,
@@ -124,12 +133,13 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    titleSingIn:{
+    titleSingUp:{
         fontSize:30,
         color:"#fff",
-        margin:10
+        margin:10,
+        marginTop: 50
     },
-    subtitleSingIn:{
+    subtitleSingUp:{
         fontSize:15,
         color:"#fff",
         margin:10,
@@ -169,7 +179,7 @@ const style = StyleSheet.create({
         padding: 11,
         borderRadius: 5,
       },
-      button: {
+      buttonSingUp: {
         backgroundColor: "black",
         borderRadius: 10,
         height: 60,
@@ -179,7 +189,7 @@ const style = StyleSheet.create({
         alignItems: "center",
       },
       
-      buttonText: {
+      buttonTextSingUp: {
         color: "white"
       },
       parrafosForm: {
@@ -197,4 +207,4 @@ const style = StyleSheet.create({
         fontWeight: 700,
       },
 })
-export default SingInForm
+export default SingUpForm

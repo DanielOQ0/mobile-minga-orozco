@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { Text , StyleSheet, View, ImageBackground , Dimensions, Image, Button, TouchableOpacity} from 'react-native'
 
@@ -7,10 +7,6 @@ const screenHeight = Dimensions.get('window').height;
 
 function Hero() {
     const navigation = useNavigation();
-
-    function handlePress(){
-        navigation.navigate('Mangas')
-    }
     
   return (
     <View style={style.hero}>
@@ -18,7 +14,7 @@ function Hero() {
         <Text style={style.titleHero}>Best manga reader</Text>
         <Text style={style.subtitleHero}>Your favourite manga reader 😏</Text>
         <TouchableOpacity style={style.buttonHero}
-        onPress={handlePress()}
+            onPress={() => {navigation.navigate('Mangas');}}
         >
             <Text style={style.buttonTextHero}>See Mangas</Text>
         </TouchableOpacity>

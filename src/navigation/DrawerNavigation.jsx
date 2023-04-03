@@ -8,6 +8,7 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Image, View } from 'react-native';
 import CustomButtonDrawer from '../components/CustonButtonDrawer';
+import Register from '../screens/Register';
 
 const Drawer = createDrawerNavigator();
 
@@ -58,7 +59,7 @@ function DrawerNavigation() {
       />
       <Drawer.Screen 
       name="Register" 
-      component={Mangas} 
+      component={Register} 
       options={{
         drawerIcon: ({color}) => (
           <FontAwesome5 name="user-plus" size={22} color={color} />
