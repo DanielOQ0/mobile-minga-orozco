@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState }  from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {View , ImageBackground , Dimensions , StyleSheet, Text , Image  , TextInput, TouchableOpacity} from 'react-native'
+import {View , ImageBackground , Dimensions , StyleSheet, Text , Alert  , TextInput, TouchableOpacity} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import axios from 'axios';
 
@@ -10,7 +10,9 @@ const screenHeight = Dimensions.get('window').height;
 
 function SingUpForm() {
     const navigation = useNavigation()
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [photo, setPhoto] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState()
     const dispatch = useDispatch()
@@ -23,7 +25,7 @@ function SingUpForm() {
         password: password
     }
     
-    let url = 'https://minga-host.onrender.com/auth/signup'
+    let url = process.env.API_URL.concat("/auth/signup");
     try {
       setLoading(true)
         await axios.post(url, data)
@@ -31,14 +33,19 @@ function SingUpForm() {
         setTimeout(() => {
         setLoading(false);
       }, 3000);
-      navigation.navigate("Home")
+      navigation.navigate("Index")
       Alert.alert(
         'Account created!',
         'Your account has been created successfully.',
       );
     } catch (error) {
-        console.log(error)
-        setLoading(false);
+      let errorMessage
+      let type = typeof error.response.data.message
+      if(type === "object"){
+          errorMessage = error.response.data.message[0]
+      }else{errorMessage = error.response.data.message}
+      Alert.alert(errorMessage)
+      setLoading(false)
     }
     }
 

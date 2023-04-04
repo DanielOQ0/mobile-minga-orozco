@@ -5,58 +5,57 @@ import {View , ImageBackground , Dimensions , StyleSheet, Text , Image  , TextIn
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NavigateActions from '../store/NavigationState/actions';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
+const {reloadState} = NavigateActions
+
 function SingInForm() {
+
     const navigation = useNavigation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState()
     const dispatch = useDispatch()
+    let state = useSelector(store => store.stateNavigate.state)
 
     async function handleSubmit(){
-      let data = {
-        email: email,
-        password: password
-      };
-      
-      let url = process.env.API_URL.concat("/auth/signin");
-  
-      try {
-        setLoading(true)
-        const response = await axios.post(url, data);
-        const { token, user } = response.data;
+        let data = {
+            email: email,
+            password: password
+        };
         
-        // Almacenar el token en AsyncStorage y luego imprimir el valor almacenado
-        await AsyncStorage.setItem('token', token);
-        const storedToken = await AsyncStorage.getItem('token');
-        console.log('Token almacenado:', storedToken);
-        
-        // Almacenar los datos del usuario en AsyncStorage y luego imprimir el valor almacenado
-        await AsyncStorage.setItem('user', JSON.stringify({
-          name: user.name,
-          email: user.email,
-          photo: user.photo,
-        }));
-
-        const storedUser = await AsyncStorage.getItem('user');
-        console.log('Usuario almacenado:', storedUser);
-        Alert.alert("Singed in successfully")
-        dispatch(reloadBottomTabs({ state: !state }))
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
-      } catch (error) {
-        let errorMessage
-        let type = typeof error.response.data.message
-        if(type === "object"){
-            errorMessage = error.response.data.message[0]
-        }else{errorMessage = error.response.data.message}
-        Alert.alert(errorMessage)
-        setLoading(false)
-      }
+        let url = process.env.API_URL.concat("/auth/signin");
+        try {
+            setLoading(true)
+            const response = await axios.post(url, data);
+            const { token, user } = response.data;
+            
+            // Almacenar el token
+            await AsyncStorage.setItem('token', token);
+            // Almacenar los datos del usuario
+            await AsyncStorage.setItem('user', JSON.stringify({
+            id:user._id,
+            name: user.name,
+            email: user.email,
+            photo: user.photo,
+            }));
+            dispatch(reloadState({ state: !state }))
+            setTimeout(() => {
+            setLoading(false);
+            }, 2000);
+            Alert.alert("Singed in successfully")
+        } catch (error) {
+            let errorMessage
+            let type = typeof error.response.data.message
+            if(type === "object"){
+                errorMessage = error.response.data.message[0]
+            }else{errorMessage = error.response.data.message}
+            Alert.alert(errorMessage)
+            setLoading(false)
+        }
     }
 
   return (
