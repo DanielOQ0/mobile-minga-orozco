@@ -16,6 +16,7 @@ import userReducer from './CaptureUser/reducer';
 import companyReducer from "./Company/reducer";
 import verifyReducer from './User/reducer'
 import reloadNavigationStateReducer from './NavigationState/reducer'
+import mangaClick from "./Details/reducer";
 
 export const store = configureStore({
   reducer: {
@@ -26,7 +27,7 @@ export const store = configureStore({
     text: textReducer,
     events: eventReducer,
     checks: checksReducer,
-    mangas: mangaReducer,
+    manga: mangaReducer,
     checked: captureState,
     mymanga: mymangasReducer,
     Mangaid: mangaidReducer,
@@ -36,5 +37,6 @@ export const store = configureStore({
     user: verifyReducer,
     Company: companyReducer,
     stateNavigate: reloadNavigationStateReducer,
+    mangaClick: mangaClick,
   },
 });
