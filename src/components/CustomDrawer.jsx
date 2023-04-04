@@ -49,10 +49,11 @@ const CustomDrawer = props => {
   }
   }
   return (
-    <View style={{flex: 1}}>
+    <ImageBackground source={require('../../assets/backgroundNavigation.jpg')} style={{flex: 1}}>
+      <View style={{backgroundColor: "black", height:30}}></View>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{backgroundColor: '#000'}}>
+        contentContainerStyle={{paddingTop: 0}}>
         {token && user ?
         <ImageBackground
           source={require('../../assets/backgroundProfile.jpg')}
@@ -75,11 +76,11 @@ const CustomDrawer = props => {
             }}>{user.email}</Text>
 
         </ImageBackground>:<></>}
-        <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
+        <View style={{flex: 1, paddingTop: 10}}>
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>
-      {token?<View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
+      {token?<View style={{backgroundColor:"rgba(255, 255, 255, 0.2)", padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
         <TouchableOpacity onPress={() => {deleteToken()}} style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Ionicons name="exit-outline" size={22} />
@@ -93,7 +94,7 @@ const CustomDrawer = props => {
           </View>
         </TouchableOpacity>
       </View>:<></>}
-    </View>
+    </ImageBackground>
   );
 };
 

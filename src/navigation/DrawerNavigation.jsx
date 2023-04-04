@@ -38,8 +38,9 @@ function DrawerNavigation() {
       drawerContent={(props) => <CustomDrawer {...props} />}
       screenOptions={{
         drawerActiveBackgroundColor: '#4177B7',
+        drawerInactiveBackgroundColor: 'rgba(255, 255, 255, 0.4)',
         drawerActiveTintColor: '#fff',
-        drawerInactiveTintColor: '#333',
+        drawerInactiveTintColor: '#000',
         drawerLabelStyle: {
           marginLeft: -25,
           fontSize: 15,
@@ -71,7 +72,7 @@ function DrawerNavigation() {
       {token?
       <Drawer.Screen 
       name="Mangas" 
-      component={Mangas} 
+      component={Mangas}
       options={{
         drawerIcon: ({color}) => (
           <Foundation name="book" size={22} color={color} />
@@ -92,4 +93,11 @@ function DrawerNavigation() {
   );
 }
 
+const style ={
+  text:{
+    textShadowColor: '#000', 
+    textShadowOffset: { width: 0.5, height: 0.5 }, 
+    textShadowRadius: 1,
+  }
+}
 export default DrawerNavigation

@@ -27,7 +27,7 @@ export default function Index() {
     }, [state]));
 
   return (
-    <ScrollView style={{width:screenWidth,height:screenHeight*2, flexGrow:1}}>
+    <ScrollView style={{width:screenWidth,height:screenHeight*2, flexGrow:1, backgroundColor:"black"}}>
         <Hero/>
         {token?<></>:
         <SingInForm/>
