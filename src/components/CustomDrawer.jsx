@@ -15,7 +15,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NavigateActions from '../store/NavigationState/actions';
+import mangaClick from "../store/Details/actions";
 
+const { mangaClicked } = mangaClick;
 const {reloadState} = NavigateActions
 
 const CustomDrawer = props => {
@@ -23,7 +25,7 @@ const CustomDrawer = props => {
   let [user, setUser] = useState('')
   let state = useSelector(store => store.stateNavigate.state)
   const dispatch = useDispatch()
-
+  
   useFocusEffect(React.useCallback(() => {
     async function getData() {
         try {
@@ -43,6 +45,7 @@ const CustomDrawer = props => {
       await AsyncStorage.setItem("token", "");
       await AsyncStorage.setItem("user", "");
       dispatch(reloadState({ state: !state }))
+      dispatch(mangaClicked({ state: false }));
       setToken("")
   } catch (error) {
       console.log(error);

@@ -10,7 +10,11 @@ import {
 import axios from "axios";
 import CardMangas from "../components/CardMangas";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import mangaClick from "../store/Details/actions";
+import { useDispatch } from "react-redux";
+import { useFocusEffect } from "@react-navigation/core";
 
+const { mangaClicked } = mangaClick;
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
@@ -22,8 +26,12 @@ export default function Mangas() {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-
+  const dispatch = useDispatch()
   
+  useFocusEffect(React.useCallback(() => {
+    dispatch(mangaClicked({ state: false }));
+  }, []));
+
   useEffect(() => {
     setLoading(true);
     let page =`/mangas/view?page=${currentPage}`
